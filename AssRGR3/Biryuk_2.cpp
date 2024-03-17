@@ -4,7 +4,7 @@ extern "C" int __stdcall Task1(int*, int);
 extern "C" int __cdecl Task2(int*, int);
 extern "C" int __stdcall Task3(int*, int);
 extern "C" int __cdecl Task4(int*, int);
-extern "C" int __fastcall Task5(int*, int);
+extern "C" int __fastcall Task5(int, int*);
 
 int main() {
 	const int N = 20;
@@ -13,5 +13,5 @@ int main() {
 	std::cout << "\n__cdecl: " << Task2(a, N);
 	std::cout << "\n__stdcall: " << Task3(a, N);
 	std::cout << "\n__cdecl: " << Task4(a, N);
-	std::cout << "\n__fastcall: " << Task5(a, N) << '\n';
+	std::cout << "\n__fastcall: " << Task5(N, a) << '\n';
 }
