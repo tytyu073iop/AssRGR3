@@ -1,38 +1,43 @@
 .386
-PUBLIC _Task1@4
+PUBLIC _Task1@8
 PUBLIC _Task2
 PUBLIC Task3
 PUBLIC Task4
-PUBLIC @Task5@4
+PUBLIC @Task5@8
 
 .model flat
 .data
 .code
-_Task1@4 proc
+_Task1@8 proc
 push ebp
 mov ebp, esp
 push ecx
 push ebx
-mov ecx, [ebp+8]
-mov eax, [ebp+12][ecx*4-4]
+push edx
+mov ecx, [ebp+12]
+mov edx, [ebp+8]
+mov eax, [edx][ecx*4-4]
+; mov esp, ebp
+; pop ebp
+; ret 8
 mov ebx, 1
 dec ecx
 	fi:
-cmp [ebp+12][ecx*4-4], eax
+cmp [edx][ecx*4-4], eax
 	jne nig
 inc ebx
 	nig:
 	loop fi
 push eax
 push ebx
-mov ecx, [ebp+8]
+mov ecx, [ebp+12]
 dec ecx
 	cycle1:
-mov eax, [ebp+12][ecx*4-4]
+mov eax, [edx][ecx*4-4]
 mov ebx, 0
 push ecx
 	cycle2:
-cmp [ebp+12][ecx * 4 - 4], eax
+cmp [edx][ecx * 4 - 4], eax
 	jne ne2
 inc ebx
 	ne2 :
@@ -46,12 +51,13 @@ mov [esp+4], eax
 	loop cycle1
 pop ebx
 pop eax
+pop edx
 pop ebx
 pop ecx
 mov esp, ebp
 pop ebp
 ret 8
-_Task1@4 endp
+_Task1@8 endp
 
 ; ****
 
@@ -60,26 +66,28 @@ push ebp
 mov ebp, esp
 push ecx
 push ebx
-mov ecx, [ebp+8]
-mov eax, [ebp+12][ecx*4-4]
+push edx
+mov ecx, [ebp+12]
+mov edx, [ebp+8]
+mov eax, [edx][ecx*4-4]
 mov ebx, 1
 dec ecx
 	fi:
-cmp [ebp+12][ecx*4-4], eax
+cmp [edx][ecx*4-4], eax
 	jne nig
 inc ebx
 	nig:
 	loop fi
 push eax
 push ebx
-mov ecx, [ebp+8]
+mov ecx, [ebp+12]
 dec ecx
 	cycle1:
-mov eax, [ebp+12][ecx*4-4]
+mov eax, [edx][ecx*4-4]
 mov ebx, 0
 push ecx
 	cycle2:
-cmp [ebp+12][ecx * 4 - 4], eax
+cmp [edx][ecx * 4 - 4], eax
 	jne ne2
 inc ebx
 	ne2 :
@@ -93,6 +101,7 @@ mov [esp+4], eax
 	loop cycle1
 pop ebx
 pop eax
+pop edx
 pop ebx
 pop ecx
 mov esp, ebp
@@ -105,13 +114,15 @@ _Task2 endp
 Task3 proc stdcall, a:dword, N:dword
 push ecx
 push ebx
+push edx
 mov ecx, N
+mov edx, a
 ; first element
-mov eax, a[ecx*4-4]
+mov eax, [edx][ecx*4-4]
 mov ebx, 1
 dec ecx
 	fi:
-cmp a[ecx*4-4], eax
+cmp [edx][ecx*4-4], eax
 	jne nig
 inc ebx
 	nig:
@@ -121,12 +132,12 @@ push ebx
 mov ecx, N
 dec ecx
 	cycle1:
-mov eax, a[ecx*4-4]
+mov eax, [edx][ecx*4-4]
 mov ebx, 0 ; 1
 push ecx
 ; dec ecx
 	cycle2:
-cmp a[ecx * 4 - 4], eax
+cmp [edx][ecx * 4 - 4], eax
 	jne ne2
 inc ebx
 	ne2 :
@@ -142,6 +153,7 @@ mov eax, [esp+4]
 ; empty stack
 pop ebx
 pop eax
+pop edx
 pop ebx
 pop ecx
 ret ; 8
@@ -152,13 +164,15 @@ Task3 endp
 Task4 proc C, a:dword, N:dword
 push ecx
 push ebx
+push edx
 mov ecx, N
+mov edx, a
 ; first element
-mov eax, a[ecx*4-4]
+mov eax, [edx][ecx*4-4]
 mov ebx, 1
 dec ecx
 	fi:
-cmp a[ecx*4-4], eax
+cmp [edx][ecx*4-4], eax
 	jne nig
 inc ebx
 	nig:
@@ -168,12 +182,12 @@ push ebx
 mov ecx, N
 dec ecx
 	cycle1:
-mov eax, a[ecx*4-4]
+mov eax, [edx][ecx*4-4]
 mov ebx, 0 ; 1
 push ecx
 ; dec ecx
 	cycle2:
-cmp a[ecx * 4 - 4], eax
+cmp [edx][ecx * 4 - 4], eax
 	jne ne2
 inc ebx
 	ne2 :
@@ -200,11 +214,12 @@ Task4 endp
 push ebx
 ; first element
 push ecx
-mov eax, edx[ecx*4-4]
+mov eax, ecx
+mov eax, [edx][ecx*4-4]
 mov ebx, 1
 dec ecx
 	fi:
-cmp edx[ecx*4-4], eax
+cmp [edx][ecx*4-4], eax
 	jne nig
 inc ebx
 	nig:
@@ -214,12 +229,12 @@ push eax
 push ebx
 dec ecx
 	cycle1:
-mov eax, edx[ecx*4-4]
+mov eax, [edx][ecx*4-4]
 mov ebx, 0 ; 1
 push ecx
 ; dec ecx
 	cycle2:
-cmp edx[ecx * 4 - 4], eax
+cmp [edx][ecx * 4 - 4], eax
 	jne ne2
 inc ebx
 	ne2 :
